@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://31c1t60x61tu"]
+
+[ext_resource type="Texture2D" uid="uid://b1fe686p1b053" path="res://assets/sprites/world_tileset.png" id="1_s2cp2"]
+[ext_resource type="Script" path="res://scripts/powerup_area.gd" id="2_wrs3a"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2nuf"]
+atlas = ExtResource("1_s2cp2")
+region = Rect2(112, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_du71t"]
+atlas = ExtResource("1_s2cp2")
+region = Rect2(112, 96, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s4stb"]
+atlas = ExtResource("1_s2cp2")
+region = Rect2(112, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vj0w7"]
+atlas = ExtResource("1_s2cp2")
+region = Rect2(112, 128, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h0n8n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2nuf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_du71t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s4stb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vj0w7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0a2dg"]
+size = Vector2(12, 13)
+
+[node name="Powerup" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_h0n8n")
+autoplay = "default"
+frame_progress = 0.0154878
+
+[node name="Powerup_Area" type="Area2D" parent="."]
+collision_mask = 2
+script = ExtResource("2_wrs3a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Powerup_Area"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_0a2dg")
+
+[connection signal="area_entered" from="Powerup_Area" to="Powerup_Area" method="_on_area_entered"]
+[connection signal="body_entered" from="Powerup_Area" to="Powerup_Area" method="_on_body_entered"]
+[connection signal="body_exited" from="Powerup_Area" to="Powerup_Area" method="_on_body_exited"]
