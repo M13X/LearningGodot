@@ -3,14 +3,14 @@ extends CharacterBody2D
 #Imports
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var death_sound = $DeathSound
-@onready var weapon_scene = preload("res://scenes/bazooka.tscn")
+@onready var weapon_scene = preload("res://scenes/flamethrower.tscn")
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # Constants
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
-const MAX_AMMO = 1
-const BAZOOKA_ROTATION = -5
+const MAX_AMMO = 100
+#const BAZOOKA_ROTATION = -5
 
 # Globals
 
@@ -22,6 +22,8 @@ var jumps = max_jumps
 
 # Weapon Handling
 var weapon_instance: Node = null
+var weapon_sprite = null
+var weapon_original_pos = null
 var ammo = MAX_AMMO
 
 
@@ -52,8 +54,20 @@ func movement():
 	
 	if direction_input:
 		velocity.x = direction_input * SPEED
+		
+		if weapon_instance:
+			if weapon_instance.flame_instance: 
+				if direction_input > 0: 
+					print(weapon_instance.flame_instance.cpu_particles.gravity.x)
+					weapon_instance.flame_instance.cpu_particles.gravity.x = \
+					weapon_instance.flame_instance.ORIGINAL_GRAV.x + velocity.x + 2000
+				if direction_input < 0: 
+					print(weapon_instance.flame_instance.cpu_particles.gravity.x)
+					weapon_instance.flame_instance.cpu_particles.gravity.x = \
+					-weapon_instance.flame_instance.ORIGINAL_GRAV.x - velocity.x - 2000
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
+		
 	
 	return direction_input
 
@@ -80,17 +94,19 @@ func animations(facing_direction):
 			animated_sprite.play("run")
 	else:
 		animated_sprite.play("jumping")
-		
+	
 	# Equipment animations
-	if weapon_instance:
-		var weapon_sprite = weapon_instance.get_node("WeaponSprite")
-		if direction > 0:
-			weapon_sprite.flip_h = false
-			weapon_sprite.rotation_degrees = BAZOOKA_ROTATION
-		elif direction < 0:
-			weapon_sprite.flip_h = true
-			weapon_sprite.rotation_degrees = -BAZOOKA_ROTATION
+	equipment_animations()
 
+
+func equipment_animations():
+	if weapon_instance:
+		weapon_sprite.flip_h = animated_sprite.flip_h
+	
+		if direction > 0:
+			weapon_instance.position.x = weapon_original_pos.x
+		elif direction < 0:
+			weapon_instance.position.x = -weapon_original_pos.x
 
 func sprite_flip(facing_direction, target):
 		# Player animations
@@ -105,8 +121,10 @@ func sprite_flip(facing_direction, target):
 func equip_weapon():
 	weapon_instance = weapon_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	self.add_child(weapon_instance)
-	weapon_instance.position = Vector2(0, BAZOOKA_ROTATION)
-	weapon_instance.z_index = -1
+	weapon_sprite = weapon_instance.get_node("WeaponSprite")
+	weapon_instance.z_index = 1 #-1
+	weapon_sprite.flip_h = animated_sprite.flip_h
+	weapon_original_pos = weapon_instance.position
 	print(weapon_instance)
 
 func unequip_weapon():
@@ -114,6 +132,8 @@ func unequip_weapon():
 		weapon_instance.get_parent().remove_child(weapon_instance)
 		weapon_instance.queue_free()
 		weapon_instance = null
+		weapon_original_pos = null
+		weapon_sprite = null
 
 func shoot():
 	if ammo:

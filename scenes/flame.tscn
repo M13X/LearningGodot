@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://ci5sltqvva4yy"]
+[gd_scene load_steps=4 format=3 uid="uid://brlldmvflkqym"]
 
-[ext_resource type="Script" path="res://scripts/rocket.gd" id="1_lf4n2"]
+[ext_resource type="Script" path="res://scripts/flame.gd" id="1_xqt27"]
 
 [sub_resource type="Curve" id="Curve_tesik"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.506711, 0.569595), -2.18131, -2.18131, 0, 0, Vector2(1, 0), -0.069035, 0.0, 0, 0]
@@ -10,18 +10,18 @@ point_count = 3
 offsets = PackedFloat32Array(0.0037037, 0.348148, 1)
 colors = PackedColorArray(1, 0.352941, 0, 1, 1, 0.635294, 0.196078, 1, 1, 1, 0, 0.615686)
 
-[node name="Rocket" type="Node2D"]
-script = ExtResource("1_lf4n2")
+[node name="Flame" type="Node2D"]
+position = Vector2(30, -4)
+script = ExtResource("1_xqt27")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 amount = 800
+lifetime = 0.3
 emission_shape = 1
 emission_sphere_radius = 3.14
-gravity = Vector2(98, 0)
-linear_accel_max = 20.0
-radial_accel_max = 20.0
+gravity = Vector2(980, 0)
+initial_velocity_max = 90.0
 scale_amount_max = 3.0
 scale_amount_curve = SubResource("Curve_tesik")
 color_ramp = SubResource("Gradient_j0pw5")
 hue_variation_max = 1.0
-anim_offset_max = 1.0

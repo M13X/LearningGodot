@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ga2x3arr58mr" path="res://scenes/slime.tscn" id="6_if72n"]
 [ext_resource type="FontFile" uid="uid://cvi5ysg4ham6h" path="res://assets/fonts/PixelOperator8.ttf" id="7_kuah7"]
 [ext_resource type="PackedScene" uid="uid://31c1t60x61tu" path="res://scenes/powerup.tscn" id="10_r73dj"]
-[ext_resource type="PackedScene" uid="uid://cej3nnxxr3l4m" path="res://scenes/bazooka_pickup.tscn" id="11_r0jfa"]
+[ext_resource type="PackedScene" uid="uid://dvsuhtt1ywbhc" path="res://scenes/flamethrower_pickup.tscn" id="11_ppwas"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qme7"]
 texture = ExtResource("2_fpa2s")
@@ -535,7 +535,7 @@ text = "Space to die"
 [node name="Slimes" type="Node" parent="."]
 
 [node name="Slime" parent="Slimes" instance=ExtResource("6_if72n")]
-position = Vector2(36, 0)
+position = Vector2(55, -11)
 
 [node name="Slime2" parent="Slimes" instance=ExtResource("6_if72n")]
 position = Vector2(-199, -96)
@@ -549,5 +549,5 @@ position = Vector2(-161, 1)
 [node name="Powerup" parent="." instance=ExtResource("10_r73dj")]
 position = Vector2(120, -119)
 
-[node name="BazookaPickup" parent="." instance=ExtResource("11_r0jfa")]
-position = Vector2(87, -110)
+[node name="FlamethrowerPickup" parent="." instance=ExtResource("11_ppwas")]
+position = Vector2(85, -97)

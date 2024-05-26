@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlggwjj5yyc4b"]
+
+[ext_resource type="Script" path="res://scripts/flamethrower.gd" id="1_pxdvh"]
+[ext_resource type="Texture2D" uid="uid://dejf88coi0dek" path="res://assets/sprites/weapons.png" id="2_b5ufk"]
+
+[node name="Flamethrower" type="Node2D"]
+position = Vector2(2, -4)
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_pxdvh")
+
+[node name="WeaponSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_b5ufk")
+region_enabled = true
+region_rect = Rect2(111, 65, 53, 32)
+
+[node name="FlameTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true

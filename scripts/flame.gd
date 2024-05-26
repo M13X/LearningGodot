@@ -7,8 +7,8 @@ extends Node2D
 const SPEED = 50
 
 # Variables
-var shooting = false
-var direction_of_shooting = 1
+@onready var ORIGINAL_POS = position
+@onready var ORIGINAL_GRAV = cpu_particles.gravity
 
 
 # Called when the node enters the scene tree for the first time.
@@ -18,16 +18,18 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if shooting:
-		position.x = position.x + direction_of_shooting * SPEED *delta
+	if get_parent().weapon_sprite.flip_h:
+		position.x = -ORIGINAL_POS.x
+		#cpu_particles.gravity.x = -ORIGINAL_GRAV.x
+	else:
+		position.x = ORIGINAL_POS.x
+		#cpu_particles.gravity.x = ORIGINAL_GRAV.x
+	pass
 
 func shoot(direction):
 	cpu_particles.emitting = true
-	shooting = true
 	if direction:
-		direction_of_shooting = -1
-		print("Rocket going out LEFT")
-	else:
-		direction_of_shooting = 1
 		cpu_particles.gravity.x = -cpu_particles.gravity.x
-		print("Rocket going out RIGHT")
+		position.x = -ORIGINAL_POS.x
+	else:
+		pass
