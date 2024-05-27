@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/slime.gd" id="1_cj4ke"]
 [ext_resource type="Texture2D" uid="uid://b4skwqhd0lmj3" path="res://assets/sprites/slime_green.png" id="1_i7nn3"]
-[ext_resource type="PackedScene" uid="uid://5looktcnceti" path="res://scenes/killzone.tscn" id="2_l803b"]
+[ext_resource type="PackedScene" uid="uid://5looktcnceti" path="res://scenes/hurtbox.tscn" id="2_l803b"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4imy8"]
 atlas = ExtResource("1_i7nn3")
@@ -123,12 +123,12 @@ autoplay = "default"
 frame = 1
 frame_progress = 0.967198
 
-[node name="Killzone" parent="." instance=ExtResource("2_l803b")]
+[node name="Hurtbox" parent="." instance=ExtResource("2_l803b")]
 position = Vector2(0, -12)
 collision_layer = 512
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, 5.25)
 shape = SubResource("RectangleShape2D_yolfp")
 
@@ -145,4 +145,4 @@ collision_mask = 17
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_w8pfa")
 
-[connection signal="body_entered" from="Killzone" to="." method="_on_killzone_body_entered"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_killzone_body_entered"]

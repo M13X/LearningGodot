@@ -3,6 +3,10 @@ extends CharacterBody2D
 #Imports
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var death_sound = $DeathSound
+@onready var hurt_sound = $HurtSound
+@onready var collision_shape = $CollisionShape2D
+@onready var death_timer = $DeathTimer
+
 @onready var weapon_scene = preload("res://scenes/flamethrower.tscn")
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -10,9 +14,18 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 const MAX_AMMO = 100
-#const BAZOOKA_ROTATION = -5
+
+# Structures
+enum HealthState {
+	HEALTHY,
+	HURT,
+	DEAD,
+}
 
 # Globals
+
+var health = 100
+var health_state = HealthState.HEALTHY
 
 # Movement
 var process_input = true
@@ -87,13 +100,14 @@ func jumping():
 func animations(facing_direction):
 	sprite_flip(facing_direction, animated_sprite)
 	
-	if is_on_floor():
-		if facing_direction == 0:
-			animated_sprite.play("idle")
+	if health_state == HealthState.HEALTHY:
+		if is_on_floor():
+			if facing_direction == 0:
+				animated_sprite.play("idle")
+			else:
+				animated_sprite.play("run")
 		else:
-			animated_sprite.play("run")
-	else:
-		animated_sprite.play("jumping")
+			animated_sprite.play("jumping")
 	
 	# Equipment animations
 	equipment_animations()
@@ -116,6 +130,28 @@ func sprite_flip(facing_direction, target):
 			target.flip_h = true
 
 
+func receive_damage(source, damage):
+	print(self.name, " hurt by ", source.name, \
+	" with ", source.damage, " damage.\n \
+	Remaining health: ", self.health - source.damage)
+	health -= source.damage
+	health_state = HealthState.HURT
+	hurt_sound.play()
+	
+	if health <= 0:
+		death()
+	else:
+		self.animated_sprite.play("hurt")
+
+
+func death():
+	print("dedge")
+	health = 0
+	process_input = false
+	Engine.time_scale = 0.5
+	self.animated_sprite.play("death")
+	health_state = HealthState.DEAD
+	
 # Weapon Handling Functions
 
 func equip_weapon():
@@ -140,3 +176,16 @@ func shoot():
 		if weapon_instance:
 			ammo -= 1
 			weapon_instance.load_and_shoot()
+
+
+func _on_animated_sprite_2d_animation_finished():
+	if health_state == HealthState.HURT:
+		health_state = HealthState.HEALTHY
+	elif health_state == HealthState.DEAD:
+		self.collision_shape.queue_free()
+		death_timer.start()
+
+
+func _on_death_timer_timeout():
+	get_tree().reload_current_scene()
+	Engine.time_scale = 1

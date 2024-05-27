@@ -4,11 +4,7 @@ extends Area2D
 @onready var timer = $Timer
 
 func _on_body_entered(body):
-	print("dedge")
-	Engine.time_scale = 0.5
-	body.get_node("CollisionShape2D").queue_free()
-	body.process_input = false
-	timer.start()
+	body.receive_damage(self.get_parent(), self.get_parent().damage)
 
 
 func _on_timer_timeout():

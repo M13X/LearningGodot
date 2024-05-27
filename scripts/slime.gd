@@ -11,6 +11,7 @@ const SPEED = 70.0
 
 # Variables
 var direction = 1
+var damage = 20
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -31,7 +32,3 @@ func _physics_process(delta):
 		ray_cast_hole.position.x = -ray_cast_hole.position.x
 		direction = -direction
 		animated_sprite.flip_h = !animated_sprite.flip_h
-
-
-func _on_killzone_body_entered(body):
-	body.death_sound.play()

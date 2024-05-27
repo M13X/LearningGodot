@@ -6,7 +6,7 @@
 [ext_resource type="FontFile" uid="uid://wyg01mpi4vjm" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_pium8"]
 [ext_resource type="PackedScene" uid="uid://c5fi25hb6ig0h" path="res://scenes/platform.tscn" id="3_i607u"]
 [ext_resource type="PackedScene" uid="uid://t13cw4vdjnol" path="res://scenes/coin.tscn" id="4_qji0p"]
-[ext_resource type="PackedScene" uid="uid://5looktcnceti" path="res://scenes/killzone.tscn" id="5_c2g36"]
+[ext_resource type="PackedScene" uid="uid://5looktcnceti" path="res://scenes/hurtbox.tscn" id="5_c2g36"]
 [ext_resource type="PackedScene" uid="uid://ga2x3arr58mr" path="res://scenes/slime.tscn" id="6_if72n"]
 [ext_resource type="FontFile" uid="uid://cvi5ysg4ham6h" path="res://assets/fonts/PixelOperator8.ttf" id="7_kuah7"]
 [ext_resource type="PackedScene" uid="uid://31c1t60x61tu" path="res://scenes/powerup.tscn" id="10_r73dj"]
