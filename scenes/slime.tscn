@@ -4,22 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://b4skwqhd0lmj3" path="res://assets/sprites/slime_green.png" id="1_i7nn3"]
 [ext_resource type="PackedScene" uid="uid://5looktcnceti" path="res://scenes/hurtbox.tscn" id="2_l803b"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4imy8"]
-atlas = ExtResource("1_i7nn3")
-region = Rect2(0, 24, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_11d6b"]
-atlas = ExtResource("1_i7nn3")
-region = Rect2(24, 24, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vmf1b"]
-atlas = ExtResource("1_i7nn3")
-region = Rect2(48, 24, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qiraq"]
-atlas = ExtResource("1_i7nn3")
-region = Rect2(72, 24, 24, 24)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_cad3s"]
 atlas = ExtResource("1_i7nn3")
 region = Rect2(72, 0, 24, 24)
@@ -35,6 +19,22 @@ region = Rect2(24, 0, 24, 24)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dvsal"]
 atlas = ExtResource("1_i7nn3")
 region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4imy8"]
+atlas = ExtResource("1_i7nn3")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11d6b"]
+atlas = ExtResource("1_i7nn3")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmf1b"]
+atlas = ExtResource("1_i7nn3")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qiraq"]
+atlas = ExtResource("1_i7nn3")
+region = Rect2(72, 24, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7dtfk"]
 atlas = ExtResource("1_i7nn3")
@@ -56,6 +56,23 @@ region = Rect2(72, 48, 24, 24)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_cad3s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ju3q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7wkq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvsal")
+}],
+"loop": false,
+"name": &"death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_4imy8")
 }, {
 "duration": 1.0,
@@ -69,23 +86,6 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_cad3s")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0ju3q")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u7wkq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dvsal")
-}],
-"loop": false,
-"name": &"dying",
 "speed": 10.0
 }, {
 "frames": [{
@@ -119,9 +119,8 @@ script = ExtResource("1_cj4ke")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_c766c")
+animation = &"death"
 autoplay = "default"
-frame = 1
-frame_progress = 0.967198
 
 [node name="Hurtbox" parent="." instance=ExtResource("2_l803b")]
 position = Vector2(0, -12)

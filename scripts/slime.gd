@@ -12,6 +12,7 @@ const SPEED = 70.0
 # Variables
 var direction = 1
 var damage = 20
+var process_physics = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -19,16 +20,21 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += gravity * delta
-	
-	velocity.x = direction * SPEED
-	
-	move_and_slide()
-	
-	if ray_cast_front.is_colliding() or !ray_cast_hole.is_colliding():
-		ray_cast_front.target_position.x = -ray_cast_front.target_position.x
-		ray_cast_hole.position.x = -ray_cast_hole.position.x
-		direction = -direction
-		animated_sprite.flip_h = !animated_sprite.flip_h
+	if process_physics:
+		# Add the gravity.
+		if not is_on_floor():
+			velocity.y += gravity * delta
+		
+		velocity.x = direction * SPEED
+		
+		move_and_slide()
+		
+		if ray_cast_front.is_colliding() or !ray_cast_hole.is_colliding():
+			ray_cast_front.target_position.x = -ray_cast_front.target_position.x
+			ray_cast_hole.position.x = -ray_cast_hole.position.x
+			direction = -direction
+			animated_sprite.flip_h = !animated_sprite.flip_h
+
+func mind_controlled():
+	#process_physics = false
+	pass

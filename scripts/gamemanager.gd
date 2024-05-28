@@ -5,7 +5,7 @@ extends Node
 
 # Variables
 var score = 0
-
+var mind_controlling = false
 
 func add_point():
 	score += 1

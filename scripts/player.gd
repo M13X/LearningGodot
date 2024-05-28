@@ -51,11 +51,14 @@ func _physics_process(delta):
 		# Handling jump
 		jumping()
 		
-		if Input.is_action_just_pressed("test_e"):
-			shoot()
+		if %GameManager.mind_controlling == false:
+			if Input.is_action_just_pressed("test_e"):
+				shoot()
+			if Input.is_action_just_pressed("test_f"):
+				mind_control()
 	
 	# Animations
-	animations(direction)
+	# animations(direction)
 	
 	move_and_slide()
 
@@ -151,7 +154,45 @@ func death():
 	Engine.time_scale = 0.5
 	self.animated_sprite.play("death")
 	health_state = HealthState.DEAD
+
+
+func mind_control():
+	%GameManager.mind_controlling = true
+	var targeted_enemy = self.get_node('../Slimes/Slime')
+	print(targeted_enemy)
+	animated_sprite.play("death")
+	targeted_enemy.mind_controlled()
 	
+	
+	var player_script = self.get_script()
+	var enemy_script = targeted_enemy.get_script()
+	print(player_script)
+	print(enemy_script)
+	targeted_enemy.set_script('')
+	targeted_enemy.set_script(player_script)
+	self.set_script('')
+	print(self.get_script())
+	print(targeted_enemy.get_script())
+	pass
+
+#___________________________________Triggers___________________________________
+
+func _on_animated_sprite_2d_animation_finished():
+	if health_state == HealthState.HURT:
+		health_state = HealthState.HEALTHY
+	elif health_state == HealthState.DEAD:
+		self.collision_shape.queue_free()
+		death_timer.start()
+
+
+func _on_death_timer_timeout():
+	get_tree().reload_current_scene()
+	Engine.time_scale = 1
+	
+
+
+#______________________Postponed for future implementation_____________________
+
 # Weapon Handling Functions
 
 func equip_weapon():
@@ -176,16 +217,3 @@ func shoot():
 		if weapon_instance:
 			ammo -= 1
 			weapon_instance.load_and_shoot()
-
-
-func _on_animated_sprite_2d_animation_finished():
-	if health_state == HealthState.HURT:
-		health_state = HealthState.HEALTHY
-	elif health_state == HealthState.DEAD:
-		self.collision_shape.queue_free()
-		death_timer.start()
-
-
-func _on_death_timer_timeout():
-	get_tree().reload_current_scene()
-	Engine.time_scale = 1

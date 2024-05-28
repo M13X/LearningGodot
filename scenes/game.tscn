@@ -550,4 +550,4 @@ position = Vector2(-161, 1)
 position = Vector2(120, -119)
 
 [node name="FlamethrowerPickup" parent="." instance=ExtResource("11_ppwas")]
-position = Vector2(85, -97)
+position = Vector2(105, -146)
