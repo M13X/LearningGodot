@@ -6,6 +6,8 @@ extends CharacterBody2D
 @onready var hurt_sound = $HurtSound
 @onready var collision_shape = $CollisionShape2D
 @onready var death_timer = $DeathTimer
+@onready var jump_buffer = $JumpBuffer
+@onready var coyote_timer = $CoyoteTimer
 
 @onready var weapon_scene = preload("res://scenes/flamethrower.tscn")
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -21,16 +23,21 @@ enum HealthState {
 	HURT,
 	DEAD,
 }
+enum PlayerState {
+	GROUNDED,
+	IN_AIR,
+}
 
 # Globals
 
 var health = 100
 var health_state = HealthState.HEALTHY
+var player_state = PlayerState.GROUNDED
 
 # Movement
 var process_input = true
 var direction = 0
-var max_jumps = 2
+var max_jumps = 1
 var jumps = max_jumps
 
 # Weapon Handling
@@ -51,14 +58,14 @@ func _physics_process(delta):
 		# Handling jump
 		jumping()
 		
-		if %GameManager.mind_controlling == false:
-			if Input.is_action_just_pressed("test_e"):
-				shoot()
-			if Input.is_action_just_pressed("test_f"):
-				mind_control()
+		#if %GameManager.mind_controlling == false:
+		if Input.is_action_just_pressed("test_e"):
+			shoot()
+			#if Input.is_action_just_pressed("test_f"):
+			#	mind_control()
 	
 	# Animations
-	# animations(direction)
+	animations(direction)
 	
 	move_and_slide()
 
@@ -71,6 +78,7 @@ func movement():
 	if direction_input:
 		velocity.x = direction_input * SPEED
 		
+		'''
 		if weapon_instance:
 			if weapon_instance.flame_instance: 
 				if direction_input > 0: 
@@ -81,6 +89,7 @@ func movement():
 					print(weapon_instance.flame_instance.cpu_particles.gravity.x)
 					weapon_instance.flame_instance.cpu_particles.gravity.x = \
 					-weapon_instance.flame_instance.ORIGINAL_GRAV.x - velocity.x - 2000
+		'''
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
@@ -89,15 +98,38 @@ func movement():
 
 
 func jumping():
+	print(coyote_timer.time_left)
+
+		
+	if jumps <0:
+		jumps = 0
+	if !is_on_floor():
+		if Input.is_action_just_pressed("jump"):
+			jump_buffer.start()
+			if jumps && coyote_timer.time_left != 0:
+				coyote_timer.stop()
+				velocity.y = JUMP_VELOCITY
+				jumps -= 1
+			#elif jumps:
+				#velocity.y = JUMP_VELOCITY
+				#jumps -= 1
+	
 	# Reset jumps on ground touch
 	if is_on_floor():
+			coyote_timer.start()
 			jumps = max_jumps
+			player_state = PlayerState.GROUNDED
+			if Input.is_action_just_pressed("jump") || jump_buffer.time_left != 0.0:
+				jump_buffer.stop()
+				velocity.y = JUMP_VELOCITY
+				jumps -= 1
+			
 	
 	# Check if player wants to jump
-	if Input.is_action_just_pressed("jump"):
-		if jumps:
-			velocity.y = JUMP_VELOCITY
-			jumps -= 1
+	#if Input.is_action_just_pressed("jump"):
+	#	if jumps:
+	#		velocity.y = JUMP_VELOCITY
+	#		jumps -= 1
 
 
 func animations(facing_direction):

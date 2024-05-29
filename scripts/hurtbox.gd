@@ -4,7 +4,8 @@ extends Area2D
 @onready var timer = $Timer
 
 func _on_body_entered(body):
-	body.receive_damage(self.get_parent(), self.get_parent().damage)
+	if body.name == 'Slime':
+		body.receive_damage(self.get_parent(), self.get_parent().damage)
 
 
 func _on_timer_timeout():
